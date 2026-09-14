@@ -1,0 +1,99 @@
+// ============================================
+// Design Tokens — Amina Fathima
+// Counselling Psychologist
+// ============================================
+
+// --- Colors ---
+$color-primary: #245C54;
+$color-primary-dark: #183F3A;
+
+$color-teal: #4D8C81;
+
+$color-sage: #A9D8C7;
+$color-sage-light: #DDEDE7;
+$color-mint: #F3F8F6;
+
+$color-sky: #B9DDF5;
+$color-sky-light: #EAF6FF;
+$color-sky-strong: #4D82AC;
+
+$color-apricot: #F5A46B;
+$color-apricot-light: #FFF0E3;
+
+$color-sun: #E5B847;
+$color-sun-light: #FFF4C8;
+
+$color-cream: #FFF9F1;
+$color-page: #FBFEFD;
+
+$color-white: #FFFFFF;
+
+$color-text: #263331;
+$color-text-muted: #687572;
+
+$color-border: #DCE5E2;
+
+// --- CSS Custom Properties ---
+:root {
+  --color-primary: #{$color-primary};
+  --color-primary-dark: #{$color-primary-dark};
+
+  --color-teal: #{$color-teal};
+
+  --color-sage: #{$color-sage};
+  --color-sage-light: #{$color-sage-light};
+  --color-mint: #{$color-mint};
+
+  --color-sky: #{$color-sky};
+  --color-sky-light: #{$color-sky-light};
+  --color-sky-strong: #{$color-sky-strong};
+
+  --color-apricot: #{$color-apricot};
+  --color-apricot-light: #{$color-apricot-light};
+
+  --color-sun: #{$color-sun};
+  --color-sun-light: #{$color-sun-light};
+
+  --color-cream: #{$color-cream};
+  --color-page: #{$color-page};
+
+  --color-white: #{$color-white};
+
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+
+  --color-border: #{$color-border};
+
+  // --- Radius ---
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  // --- Container ---
+  --container: 1180px;
+
+  // --- Spacing ---
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
+
+  // --- Transitions ---
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  // --- Shadows ---
+  --shadow-sm: 0 1px 3px rgba(38, 51, 49, 0.06);
+  --shadow-md: 0 4px 12px rgba(38, 51, 49, 0.08);
+  --shadow-lg: 0 8px 24px rgba(38, 51, 49, 0.1);
+  --shadow-soft: 0 18px 50px rgba(36, 92, 84, 0.1);
+  --shadow-color: 0 20px 56px rgba(77, 130, 172, 0.14);
+}

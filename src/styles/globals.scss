@@ -1,0 +1,140 @@
+@use "./variables.scss";
+@use "./typography.scss";
+
+// ============================================
+// Global Styles — Amina Fathima
+// ============================================
+
+// --- Reset & Base ---
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-page);
+  color: var(--color-text);
+  font-family: var(--font-manrope), sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+  isolation: isolate;
+}
+
+.site-main {
+  padding-top: 76px;
+}
+
+// --- Selection ---
+::selection {
+  background-color: var(--color-sage);
+  color: var(--color-primary-dark);
+}
+
+// --- Focus Visible ---
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+// --- Images ---
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// --- Container ---
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+
+  @media (min-width: 768px) {
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
+}
+
+// --- Section Spacing ---
+.section {
+  padding-top: var(--space-4xl);
+  padding-bottom: var(--space-4xl);
+  scroll-margin-top: 5.5rem;
+
+  @media (min-width: 768px) {
+    padding-top: var(--space-5xl);
+    padding-bottom: var(--space-5xl);
+  }
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 1000;
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-dark);
+  color: var(--color-white);
+  font-weight: 700;
+  transform: translateY(-200%);
+  transition: transform var(--transition-fast);
+
+  &:focus {
+    transform: translateY(0);
+    color: var(--color-white);
+  }
+}
+
+// --- Divider ---
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+  border: none;
+}
+
+// --- Reduced Motion ---
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// --- Scrollbar ---
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-mint);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-sage);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--color-teal);
+  }
+}
