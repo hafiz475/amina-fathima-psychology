@@ -1,15 +1,22 @@
 "use client";
 
+import {
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
   Brain,
   Check,
+  ChevronRight,
   GraduationCap,
   Heart,
   HeartHandshake,
   LifeBuoy,
+  Plus,
   Repeat2,
   ShieldCheck,
   Sparkles,
@@ -25,23 +32,75 @@ const categoryIcons: Record<string, LucideIcon> = {
   "academic-career": GraduationCap,
 };
 
+const categoryIllustrationAlt: Record<string, string> = {
+  clinical: "A tangled line opening toward sunlight",
+  emotional: "A woman pausing calmly with a hand over her heart",
+  behavioural: "Hands nurturing a growing plant",
+  relationships: "Two people speaking and listening to each other",
+  trauma: "A family holding one another in a protective embrace",
+  "academic-career": "A woman reading and learning",
+};
+
 export default function SupportAreas() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const shouldReduceMotion = useReducedMotion();
+
+  const selectCategory = (index: number, moveFocus = false) => {
+    setActiveIndex(index);
+
+    if (moveFocus) {
+      const tab = tabRefs.current[index];
+      tab?.focus();
+      tab?.scrollIntoView({
+        behavior: shouldReduceMotion ? "auto" : "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  };
+
+  const handleTabKeyDown = (
+    event: ReactKeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) => {
+    let nextIndex: number | null = null;
+
+    if (event.key === "ArrowRight") {
+      nextIndex = (index + 1) % supportCategories.length;
+    } else if (event.key === "ArrowLeft") {
+      nextIndex =
+        (index - 1 + supportCategories.length) % supportCategories.length;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = supportCategories.length - 1;
+    }
+
+    if (nextIndex !== null) {
+      event.preventDefault();
+      selectCategory(nextIndex, true);
+    }
+  };
+
   return (
     <section className="section support-section" id="support-areas">
       <div className="container">
-        <div className="support-intro-grid grid items-center">
-          <motion.div
-            className="support-intro-copy flex flex-col items-start"
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-70px" }}
-            transition={{ duration: 0.55 }}
-          >
+        <motion.div
+          className="section-header section-header--split support-section-header"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-70px" }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.55 }}
+        >
+          <div>
             <span className="label label--sky">
               <Sparkles size={15} aria-hidden="true" />
               Areas I work with
             </span>
             <h2>Whatever feels heavy, we can begin by understanding it.</h2>
+          </div>
+          <div className="support-header-copy">
             <p className="lead">
               I work with all kinds of mental health, emotional, behavioral and
               clinical psychological concerns.
@@ -51,66 +110,124 @@ export default function SupportAreas() {
               anxiety, panic attacks, stress, trauma, mood disorders and many
               other psychological difficulties.
             </p>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          <motion.figure
-            className="support-illustration"
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-70px" }}
-            transition={{ duration: 0.65, delay: 0.08 }}
+        <motion.div
+          className="support-explorer"
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
+        >
+          <div
+            className="support-explorer-tabs"
+            role="tablist"
+            aria-label="Choose an area of concern"
           >
-            <Image
-              src="/images/illustrations/areas-of-support.webp"
-              alt="An illustrated collage of emotional wellbeing, relationships, study, rest and personal growth"
-              width={1280}
-              height={800}
-              sizes="(max-width: 767px) 92vw, 48vw"
-            />
-          </motion.figure>
-        </div>
+            {supportCategories.map((category, index) => {
+              const Icon = categoryIcons[category.id] ?? Sparkles;
+              const isActive = index === activeIndex;
 
-        <div className="support-category-grid grid items-start">
-          {supportCategories.map((category, index) => {
-            const Icon = categoryIcons[category.id] ?? Sparkles;
-
-            return (
-              <motion.article
-                key={category.id}
-                className={`support-category support-category--${category.tone}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.45, delay: (index % 3) * 0.07 }}
-              >
-                <div className="support-category-heading">
-                  <span className="support-category-icon" aria-hidden="true">
-                    <Icon size={22} strokeWidth={1.7} />
+              return (
+                <button
+                  key={category.id}
+                  ref={(node) => {
+                    tabRefs.current[index] = node;
+                  }}
+                  type="button"
+                  id={`support-tab-${category.id}`}
+                  className={`support-explorer-tab support-explorer-tab--${category.tone}`}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`support-panel-${category.id}`}
+                  tabIndex={isActive ? 0 : -1}
+                  onClick={() => selectCategory(index)}
+                  onKeyDown={(event) => handleTabKeyDown(event, index)}
+                >
+                  <span className="support-explorer-tab-icon" aria-hidden="true">
+                    <Icon size={21} strokeWidth={1.8} />
                   </span>
-                  <div>
-                    <span className="support-category-count">
-                      {category.concerns.length} areas
+                  <span className="support-explorer-tab-copy">
+                    <span>{category.concerns.length} areas</span>
+                    <strong>{category.title}</strong>
+                  </span>
+                  <ChevronRight
+                    className="support-explorer-tab-arrow"
+                    size={18}
+                    aria-hidden="true"
+                  />
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="support-explorer-panels">
+            {supportCategories.map((category, index) => {
+              const Icon = categoryIcons[category.id] ?? Sparkles;
+              const isActive = index === activeIndex;
+
+              return (
+                <div
+                  key={category.id}
+                  id={`support-panel-${category.id}`}
+                  className={`support-explorer-panel support-explorer-panel--${category.tone}`}
+                  role="tabpanel"
+                  aria-labelledby={`support-tab-${category.id}`}
+                  hidden={!isActive}
+                  tabIndex={0}
+                >
+                  <motion.div
+                    className={`support-explorer-visual support-explorer-visual--${category.id}`}
+                    initial={
+                      shouldReduceMotion ? false : { opacity: 0, scale: 0.98 }
+                    }
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.34 }}
+                  >
+                    <Image
+                      src="/images/illustrations/areas-of-support.webp"
+                      alt={categoryIllustrationAlt[category.id]}
+                      fill
+                      sizes="(max-width: 719px) 92vw, (max-width: 1049px) 42vw, 390px"
+                    />
+                    <span className="support-explorer-visual-mark" aria-hidden="true">
+                      <Icon size={25} strokeWidth={1.7} />
                     </span>
+                  </motion.div>
+
+                  <motion.div
+                    className="support-explorer-detail"
+                    initial={shouldReduceMotion ? false : { opacity: 0, x: 14 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.34 }}
+                  >
+                    <p className="support-explorer-count">
+                      {String(index + 1).padStart(2, "0")} /{" "}
+                      {category.concerns.length} areas
+                    </p>
                     <h3>{category.title}</h3>
-                  </div>
+                    <p className="support-explorer-prompt">Support can include</p>
+                    <ul className="support-explorer-list">
+                      {category.concerns.map((concern) => (
+                        <li key={concern}>
+                          <Check size={16} strokeWidth={2.2} aria-hidden="true" />
+                          <span>{concern}</span>
+                        </li>
+                      ))}
+                      {category.id === "clinical" && (
+                        <li className="support-explorer-more">
+                          <Plus size={16} strokeWidth={2.2} aria-hidden="true" />
+                          <span>And more</span>
+                        </li>
+                      )}
+                    </ul>
+                  </motion.div>
                 </div>
-
-                <ul className="support-concern-list">
-                  {category.concerns.map((concern) => (
-                    <li key={concern}>
-                      <Check size={15} strokeWidth={2.2} aria-hidden="true" />
-                      <span>{concern}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {category.id === "clinical" && (
-                  <p className="support-more">And more</p>
-                )}
-              </motion.article>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </motion.div>
 
         <div className="support-safety-note" role="note">
           <span className="support-safety-icon" aria-hidden="true">

@@ -2,16 +2,48 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import {
+  BookOpen,
+  Brain,
+  Compass,
+  HeartHandshake,
+  UserRound,
+} from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import MenuGlyph from "./MenuGlyph";
 import BrandLogo from "@/components/ui/BrandLogo";
 
 const navLinks = [
-  { label: "Areas I work with", href: "/#support-areas" },
-  { label: "Services", href: "/#services" },
-  { label: "Approach", href: "/#approach" },
-  { label: "About", href: "/#about" },
-  { label: "Resources", href: "/resources" },
+  {
+    label: "Areas I work with",
+    href: "/#support-areas",
+    icon: Brain,
+    tone: "sky" as const,
+  },
+  {
+    label: "Services",
+    href: "/#services",
+    icon: HeartHandshake,
+    tone: "apricot" as const,
+  },
+  {
+    label: "Approach",
+    href: "/#approach",
+    icon: Compass,
+    tone: "sun" as const,
+  },
+  {
+    label: "About",
+    href: "/#about",
+    icon: UserRound,
+    tone: "sage" as const,
+  },
+  {
+    label: "Resources",
+    href: "/resources",
+    icon: BookOpen,
+    tone: "sky" as const,
+  },
 ];
 
 export default function Navbar() {
@@ -29,15 +61,25 @@ export default function Navbar() {
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!mobileOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [mobileOpen]);
+
+  useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1100px)");
+    const closeAtDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) setMobileOpen(false);
+    };
+
+    desktopQuery.addEventListener("change", closeAtDesktop);
+    return () => desktopQuery.removeEventListener("change", closeAtDesktop);
+  }, []);
 
   return (
     <>
@@ -66,12 +108,13 @@ export default function Navbar() {
 
           {/* Mobile Toggle */}
           <button
-            className="navbar-toggle"
-            onClick={() => setMobileOpen(true)}
-            aria-label="Open menu"
+            className={`navbar-toggle ${mobileOpen ? "navbar-toggle--open" : ""}`}
+            onClick={() => setMobileOpen((isOpen) => !isOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
-            <Menu size={24} />
+            <MenuGlyph open={mobileOpen} />
           </button>
         </div>
       </header>

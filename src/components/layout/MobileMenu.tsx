@@ -3,24 +3,33 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import BrandLogo from "@/components/ui/BrandLogo";
+import MenuGlyph from "./MenuGlyph";
 
 const MotionLink = motion.create(Link);
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  links: { label: string; href: string }[];
+  links: {
+    label: string;
+    href: string;
+    icon: LucideIcon;
+    tone: "sky" | "apricot" | "sun" | "sage";
+  }[];
 }
 
 export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef(true);
 
   useEffect(() => {
     if (!isOpen) return;
 
+    restoreFocusRef.current = true;
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const focusTimer = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
 
@@ -53,9 +62,14 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
     return () => {
       window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", handleKeyDown);
-      previouslyFocused?.focus();
+      if (restoreFocusRef.current) previouslyFocused?.focus();
     };
   }, [isOpen, onClose]);
+
+  const closeFromNavigation = () => {
+    restoreFocusRef.current = false;
+    onClose();
+  };
 
   return (
     <AnimatePresence>
@@ -83,7 +97,11 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
             role="dialog"
             aria-label="Mobile navigation menu"
             aria-modal="true"
+            id="mobile-navigation"
           >
+            <span className="mobile-menu-orbit mobile-menu-orbit--one" aria-hidden="true" />
+            <span className="mobile-menu-orbit mobile-menu-orbit--two" aria-hidden="true" />
+
             {/* Header */}
             <div className="mobile-menu-header">
               <BrandLogo />
@@ -93,25 +111,36 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
                 className="mobile-menu-close"
                 aria-label="Close menu"
               >
-                <X size={24} />
+                <MenuGlyph open />
               </button>
             </div>
 
             {/* Links */}
+            <p className="mobile-menu-eyebrow">Choose where to go</p>
             <nav className="mobile-menu-nav" aria-label="Mobile navigation">
-              {links.map((link, i) => (
-                <MotionLink
-                  key={link.href}
-                  href={link.href}
-                  className="mobile-menu-link"
-                  onClick={onClose}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05, duration: 0.3 }}
-                >
-                  {link.label}
-                </MotionLink>
-              ))}
+              {links.map((link, i) => {
+                const Icon = link.icon;
+
+                return (
+                  <MotionLink
+                    key={link.href}
+                    href={link.href}
+                    className={`mobile-menu-link mobile-menu-link--${link.tone}`}
+                    onClick={closeFromNavigation}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.08 + i * 0.045, duration: 0.28 }}
+                  >
+                    <span className="mobile-menu-link-icon" aria-hidden="true">
+                      <Icon size={20} strokeWidth={1.8} />
+                    </span>
+                    <span className="mobile-menu-link-label">{link.label}</span>
+                    <span className="mobile-menu-link-arrow" aria-hidden="true">
+                      <ArrowUpRight size={18} />
+                    </span>
+                  </MotionLink>
+                );
+              })}
             </nav>
 
             {/* CTA */}
@@ -121,8 +150,13 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.3 }}
             >
-              <Link href="/book" className="hero-cta" onClick={onClose}>
+              <p className="mobile-menu-assurance">
+                <ShieldCheck size={16} aria-hidden="true" />
+                Confidential support, at your pace.
+              </p>
+              <Link href="/book" className="hero-cta" onClick={closeFromNavigation}>
                 Book a Session
+                <ArrowUpRight size={17} aria-hidden="true" />
               </Link>
             </motion.div>
           </motion.div>
