@@ -1,4 +1,6 @@
 import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
+import { BriefcaseBusiness, Camera, MessageCircle } from "lucide-react";
 import BrandLogo from "@/components/ui/BrandLogo";
 
 const footerLinks = {
@@ -18,6 +20,34 @@ const footerLinks = {
     { label: "EAP Counselling", href: "/services#eap-counselling" },
   ],
 };
+
+interface SocialLink {
+  label: string;
+  href: string | null;
+  icon: LucideIcon;
+  tone: "whatsapp" | "linkedin" | "instagram";
+}
+
+const socialLinks: SocialLink[] = [
+  {
+    label: "WhatsApp",
+    href: null,
+    icon: MessageCircle,
+    tone: "whatsapp",
+  },
+  {
+    label: "LinkedIn",
+    href: null,
+    icon: BriefcaseBusiness,
+    tone: "linkedin",
+  },
+  {
+    label: "Instagram",
+    href: null,
+    icon: Camera,
+    tone: "instagram",
+  },
+];
 
 export default function Footer() {
   return (
@@ -76,6 +106,44 @@ export default function Footer() {
           <p className="footer-copyright">
             © {new Date().getFullYear()} Amina Fathima. All rights reserved.
           </p>
+          <div
+            className="footer-socials"
+            id="footer-socials"
+            aria-label="Social media"
+          >
+            {socialLinks.map((social) => {
+              const Icon = social.icon;
+              const content = (
+                <>
+                  <Icon size={18} strokeWidth={1.8} aria-hidden="true" />
+                  <span>{social.label}</span>
+                </>
+              );
+
+              return social.href ? (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className={`footer-social footer-social--${social.tone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {content}
+                </a>
+              ) : (
+                <span
+                  key={social.label}
+                  className={`footer-social footer-social--${social.tone} footer-social--placeholder`}
+                  role="link"
+                  aria-disabled="true"
+                  aria-label={`${social.label} link coming soon`}
+                  title="Link coming soon"
+                >
+                  {content}
+                </span>
+              );
+            })}
+          </div>
         </div>
       </div>
     </footer>

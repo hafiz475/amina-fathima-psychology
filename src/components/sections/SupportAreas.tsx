@@ -1,6 +1,8 @@
 "use client";
 
 import {
+  useCallback,
+  useEffect,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
@@ -43,21 +45,67 @@ const categoryIllustrationAlt: Record<string, string> = {
 
 export default function SupportAreas() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const tabsRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const scrollTimer = useRef<number | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  const centerTab = useCallback(
+    (
+      index: number,
+      behavior: ScrollBehavior = shouldReduceMotion ? "auto" : "smooth",
+    ) => {
+      const tabs = tabsRef.current;
+      const tab = tabRefs.current[index];
+
+      if (!tabs || !tab || tabs.scrollWidth <= tabs.clientWidth) return;
+
+      const left = tab.offsetLeft - (tabs.clientWidth - tab.clientWidth) / 2;
+      tabs.scrollTo({ left, behavior });
+    },
+    [shouldReduceMotion],
+  );
 
   const selectCategory = (index: number, moveFocus = false) => {
     setActiveIndex(index);
+    centerTab(index);
 
     if (moveFocus) {
       const tab = tabRefs.current[index];
       tab?.focus();
-      tab?.scrollIntoView({
-        behavior: shouldReduceMotion ? "auto" : "smooth",
-        block: "nearest",
-        inline: "center",
-      });
     }
+  };
+
+  const handleTabsScroll = () => {
+    if (scrollTimer.current !== null) {
+      window.clearTimeout(scrollTimer.current);
+    }
+
+    scrollTimer.current = window.setTimeout(() => {
+      const tabs = tabsRef.current;
+      if (!tabs || tabs.scrollWidth <= tabs.clientWidth) {
+        scrollTimer.current = null;
+        return;
+      }
+
+      const tabsCenter = tabs.scrollLeft + tabs.clientWidth / 2;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      tabRefs.current.forEach((tab, index) => {
+        if (!tab) return;
+        const tabCenter = tab.offsetLeft + tab.clientWidth / 2;
+        const distance = Math.abs(tabsCenter - tabCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      scrollTimer.current = null;
+      setActiveIndex(closestIndex);
+    }, 110);
   };
 
   const handleTabKeyDown = (
@@ -82,6 +130,18 @@ export default function SupportAreas() {
       selectCategory(nextIndex, true);
     }
   };
+
+  useEffect(() => {
+    const handleResize = () => centerTab(activeIndex, "auto");
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (scrollTimer.current !== null) {
+        window.clearTimeout(scrollTimer.current);
+      }
+    };
+  }, [activeIndex, centerTab]);
 
   return (
     <section className="section support-section" id="support-areas">
@@ -121,13 +181,26 @@ export default function SupportAreas() {
           transition={{ duration: shouldReduceMotion ? 0 : 0.6 }}
         >
           <div
+            ref={tabsRef}
             className="support-explorer-tabs"
             role="tablist"
             aria-label="Choose an area of concern"
+            onScroll={handleTabsScroll}
           >
             {supportCategories.map((category, index) => {
               const Icon = categoryIcons[category.id] ?? Sparkles;
               const isActive = index === activeIndex;
+              const distance = index - activeIndex;
+              const position =
+                distance === 0
+                  ? "active"
+                  : distance === -1
+                    ? "before"
+                    : distance === 1
+                      ? "after"
+                      : distance < 0
+                        ? "far-before"
+                        : "far-after";
 
               return (
                 <button
@@ -138,6 +211,7 @@ export default function SupportAreas() {
                   type="button"
                   id={`support-tab-${category.id}`}
                   className={`support-explorer-tab support-explorer-tab--${category.tone}`}
+                  data-position={position}
                   role="tab"
                   aria-selected={isActive}
                   aria-controls={`support-panel-${category.id}`}
@@ -161,6 +235,11 @@ export default function SupportAreas() {
               );
             })}
           </div>
+
+          <p className="sr-only" aria-live="polite" aria-atomic="true">
+            Showing {supportCategories[activeIndex].title}, area {activeIndex + 1}
+            {" "}of {supportCategories.length}
+          </p>
 
           <div className="support-explorer-panels">
             {supportCategories.map((category, index) => {
