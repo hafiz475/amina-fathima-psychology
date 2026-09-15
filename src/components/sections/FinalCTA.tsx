@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, MessageCircleHeart } from "lucide-react";
+import BookingIcon from "@/components/ui/BookingIcon";
 
 export default function FinalCTA() {
   return (
@@ -24,7 +25,8 @@ export default function FinalCTA() {
             everything alone.
           </h2>
           <p className="final-cta-subtext">Begin with a conversation.</p>
-          <Link href="/book" className="final-cta-button">
+          <Link href="/book" className="final-cta-button booking-pulse-cta">
+            <BookingIcon />
             Book a Confidential Session
             <ArrowRight size={17} aria-hidden="true" />
           </Link>

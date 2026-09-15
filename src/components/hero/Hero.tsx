@@ -9,6 +9,7 @@ import {
   MessageCircleHeart,
   ShieldCheck,
 } from "lucide-react";
+import BookingIcon from "@/components/ui/BookingIcon";
 import HeroBackground from "./HeroBackground";
 import "./hero.scss";
 
@@ -37,18 +38,18 @@ export default function Hero() {
           <motion.div
             className="hero-label"
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduceMotion ? false : "hidden"}
             animate="visible"
             custom={0}
           >
             <MessageCircleHeart size={16} aria-hidden="true" />
-            Counselling with Amina Fathima
+            Counselling with Syed Amina
           </motion.div>
 
           <motion.h1
             className="hero-heading"
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduceMotion ? false : "hidden"}
             animate="visible"
             custom={1}
           >
@@ -58,7 +59,7 @@ export default function Hero() {
           <motion.p
             className="hero-description"
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduceMotion ? false : "hidden"}
             animate="visible"
             custom={2}
           >
@@ -70,11 +71,12 @@ export default function Hero() {
           <motion.div
             className="hero-actions flex flex-wrap items-center"
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduceMotion ? false : "hidden"}
             animate="visible"
             custom={3}
           >
-            <Link href="/book" className="hero-cta">
+            <Link href="/book" className="hero-cta booking-pulse-cta">
+              <BookingIcon />
               Begin with a conversation
               <ArrowRight size={17} aria-hidden="true" />
             </Link>
@@ -86,7 +88,7 @@ export default function Hero() {
           <motion.ul
             className="hero-trust-list flex flex-wrap"
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduceMotion ? false : "hidden"}
             animate="visible"
             custom={4}
             aria-label="Session information"

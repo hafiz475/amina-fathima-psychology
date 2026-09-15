@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Resources",
   description:
-    "Mental health resources, articles and guides from Amina Fathima — Counselling Psychologist.",
+    "Mental health resources, articles and guides from Syed Amina — Counselling Psychologist.",
 };
 
 export default function ResourcesPage() {

@@ -12,9 +12,10 @@
 }
 
 .brand-logo-mark {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  object-fit: contain;
   filter: drop-shadow(0 5px 9px color-mix(in srgb, var(--color-primary) 16%, transparent));
 }
 
@@ -49,6 +50,130 @@
 
   .brand-logo-byline {
     color: var(--color-sage);
+  }
+}
+
+.booking-icon {
+  position: relative;
+  width: 1.28rem;
+  height: 1.28rem;
+  display: inline-grid;
+  flex: 0 0 1.28rem;
+  place-items: center;
+}
+
+.booking-icon-calendar {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  animation: booking-icon-float 2.8s ease-in-out infinite;
+}
+
+.booking-icon-spark {
+  position: absolute;
+  top: -0.24rem;
+  right: -0.28rem;
+  color: var(--color-sun);
+  filter: drop-shadow(0 1px 2px color-mix(in srgb, var(--color-primary-dark) 20%, transparent));
+  transform-origin: center;
+  animation: booking-icon-twinkle 1.9s ease-in-out infinite;
+}
+
+.booking-pulse-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  gap: 0.52rem;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &::before {
+    inset: 3px;
+    border: 1px solid currentColor;
+    border-radius: inherit;
+    opacity: 0;
+    animation: booking-cta-inner-pulse 3.2s ease-out infinite;
+  }
+
+  &::after {
+    top: -35%;
+    bottom: -35%;
+    left: -32%;
+    width: 22%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-white) 58%, transparent),
+      transparent
+    );
+    opacity: 0;
+    transform: skewX(-16deg);
+    animation: booking-cta-sheen 4.2s ease-in-out infinite;
+  }
+}
+
+@keyframes booking-icon-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-1.5px) rotate(-2deg);
+  }
+}
+
+@keyframes booking-icon-twinkle {
+  0%,
+  100% {
+    opacity: 0.52;
+    transform: scale(0.78) rotate(-8deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08) rotate(6deg);
+  }
+}
+
+@keyframes booking-cta-inner-pulse {
+  0%,
+  62%,
+  100% {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  76% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+}
+
+@keyframes booking-cta-sheen {
+  0%,
+  58% {
+    left: -32%;
+    opacity: 0;
+  }
+
+  66% {
+    opacity: 0.34;
+  }
+
+  86% {
+    left: 112%;
+    opacity: 0;
+  }
+
+  100% {
+    left: 112%;
+    opacity: 0;
   }
 }
 
@@ -551,8 +676,35 @@
   padding-top: var(--space-lg);
   margin-top: auto;
 
-  .hero-cta {
+  .mobile-booking-button {
     width: 100%;
+  }
+}
+
+.mobile-booking-button {
+  min-height: 50px;
+  padding: 0.78rem 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--color-primary) 20%, transparent);
+  color: var(--color-white);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    background: var(--color-primary-dark);
+    box-shadow: 0 13px 28px color-mix(in srgb, var(--color-primary) 26%, transparent);
+    color: var(--color-white);
+    transform: translateY(-2px);
   }
 }
 
@@ -1247,6 +1399,10 @@
   min-width: 0;
 }
 
+.support-explorer-cues {
+  display: none;
+}
+
 .support-explorer-panel {
   --panel-surface: var(--color-mint);
   --panel-accent: var(--color-teal);
@@ -1465,6 +1621,103 @@
     &[data-position="far-after"] {
       transform: rotateY(-20deg) scale(0.84);
     }
+  }
+
+  .support-explorer-cues {
+    padding: 0.2rem 0.35rem 0.35rem;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .support-explorer-cue-button {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-border));
+    border-radius: 50%;
+    background: var(--color-white);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-primary);
+    cursor: pointer;
+    transition:
+      color var(--transition-base),
+      background-color var(--transition-base),
+      transform var(--transition-base),
+      opacity var(--transition-base);
+
+    &:hover:not(:disabled) {
+      background: var(--color-primary);
+      color: var(--color-white);
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.34;
+      cursor: not-allowed;
+    }
+
+    &--next.is-inviting svg {
+      animation: support-cue-nudge 1.8s ease-in-out infinite;
+    }
+  }
+
+  .support-explorer-cue-copy {
+    min-width: 0;
+    display: grid;
+    justify-items: center;
+    gap: 0.3rem;
+    text-align: center;
+
+    > span {
+      color: var(--color-primary-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    > strong {
+      color: var(--color-text-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.055em;
+      text-transform: uppercase;
+    }
+  }
+
+  .support-explorer-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.32rem;
+
+    span {
+      width: 5px;
+      height: 5px;
+      border-radius: var(--radius-pill);
+      background: var(--color-border);
+      transition:
+        width var(--transition-base),
+        background-color var(--transition-base);
+
+      &.is-active {
+        width: 18px;
+        background: var(--color-sky-strong);
+      }
+    }
+  }
+}
+
+@keyframes support-cue-nudge {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+
+  50% {
+    transform: translateX(3px);
   }
 }
 
@@ -2912,6 +3165,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .booking-icon-calendar,
+  .booking-icon-spark,
+  .booking-pulse-cta::before,
+  .booking-pulse-cta::after,
+  .support-explorer-cue-button--next.is-inviting svg {
+    animation: none !important;
+  }
+
   .navbar-toggle .menu-glyph > span {
     animation: none !important;
   }

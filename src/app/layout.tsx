@@ -3,9 +3,11 @@ import { Manrope } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import MotionProvider from "@/components/ui/MotionProvider";
+import SiteLoader from "@/components/ui/SiteLoader";
 import "@/styles/tailwind.css";
 import "@/styles/globals.scss";
 import "@/styles/sections.scss";
+import "@/styles/loader.scss";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -15,9 +17,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sirat-counselling.famous-myna-4321.chatgpt.site"),
+  metadataBase: new URL("https://sirat-counselling.bizmagnetsdev.chatgpt.site"),
   title: {
-    default: "Sirat — Amina Fathima, Counselling Psychologist",
+    default: "Sirat — Syed Amina, Counselling Psychologist",
     template: "%s | Sirat",
   },
   description:
@@ -33,9 +35,9 @@ export const metadata: Metadata = {
     "EAP",
     "counselling psychology",
   ],
-  authors: [{ name: "Amina Fathima" }],
+  authors: [{ name: "Syed Amina" }],
   openGraph: {
-    title: "Sirat — Amina Fathima, Counselling Psychologist",
+    title: "Sirat — Syed Amina, Counselling Psychologist",
     description:
       "A safe space to understand, process and move forward. Confidential counselling for individuals, couples and organizations.",
     type: "website",
@@ -49,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={manrope.variable}>
       <body>
+        <SiteLoader />
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>

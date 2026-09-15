@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn about Amina Fathima — Counselling Psychologist with M.Sc. in Counselling Psychology, providing client-centered mental health support.",
+    "Learn about Syed Amina — Counselling Psychologist with M.Sc. in Counselling Psychology, providing client-centered mental health support.",
 };
 
 export default function AboutPage() {
@@ -12,7 +12,7 @@ export default function AboutPage() {
       <div className="container">
         <span className="label">About</span>
         <h1 style={{ marginTop: "0.5rem", marginBottom: "1.5rem" }}>
-          About Amina Fathima
+          About Syed Amina
         </h1>
         <div style={{ maxWidth: "680px" }}>
           <p className="lead" style={{ marginBottom: "1.5rem" }}>

@@ -1,6 +1,6 @@
-# Amina Fathima — Counselling Psychologist Practice Website
+# Syed Amina — Counselling Psychologist Practice Website
 
-Official professional portfolio and appointment booking platform for **Amina Fathima**, Counselling Psychologist (M.Sc. Counselling Psychology).
+Official professional portfolio and appointment booking platform for **Syed Amina**, Counselling Psychologist (M.Sc. Counselling Psychology).
 
 ## 🌿 Overview
 
@@ -49,4 +49,4 @@ npm run start
 - `src/styles/` — Custom design system tokens (`variables.scss`, `sections.scss`)
 
 ---
-© Amina Fathima. All rights reserved.
+© Syed Amina. All rights reserved.

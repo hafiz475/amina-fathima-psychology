@@ -318,7 +318,7 @@
   .hero-content {
     min-height: calc(100svh - 76px);
     padding-top: clamp(2.75rem, 9vw, 4rem);
-    padding-bottom: clamp(12rem, 58vw, 18rem);
+    padding-bottom: clamp(2.75rem, 9vw, 4rem);
     align-content: center;
     gap: 0;
     isolation: isolate;
@@ -352,18 +352,20 @@
     box-shadow: none;
 
     img {
-      object-fit: contain;
-      object-position: center bottom;
-      opacity: 0.92;
-      transform: scale(1.02);
+      object-fit: cover;
+      object-position: center center;
+      opacity: 0.52;
+      filter: saturate(0.88);
+      transform: scale(1.035);
     }
 
     &::after {
       background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-sky-light) 96%, transparent) 0%,
-        color-mix(in srgb, var(--color-sky-light) 92%, transparent) 58%,
-        color-mix(in srgb, var(--color-cream) 46%, transparent) 100%
+        color-mix(in srgb, var(--color-sky-light) 80%, transparent) 0%,
+        color-mix(in srgb, var(--color-sky-light) 69%, transparent) 42%,
+        color-mix(in srgb, var(--color-cream) 52%, transparent) 76%,
+        color-mix(in srgb, var(--color-cream) 28%, transparent) 100%
       );
       box-shadow: none;
     }

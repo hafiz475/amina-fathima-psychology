@@ -13,6 +13,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   Brain,
   Check,
+  ChevronLeft,
   ChevronRight,
   GraduationCap,
   Heart,
@@ -234,6 +235,46 @@ export default function SupportAreas() {
                 </button>
               );
             })}
+          </div>
+
+          <div
+            className="support-explorer-cues"
+            aria-label="Browse all areas of concern"
+          >
+            <button
+              type="button"
+              className="support-explorer-cue-button"
+              onClick={() => selectCategory(activeIndex - 1)}
+              disabled={activeIndex === 0}
+              aria-label="Show previous area"
+            >
+              <ChevronLeft size={19} aria-hidden="true" />
+            </button>
+            <div className="support-explorer-cue-copy">
+              <span>Swipe or use the arrows</span>
+              <div className="support-explorer-dots" aria-hidden="true">
+                {supportCategories.map((category, index) => (
+                  <span
+                    key={category.id}
+                    className={index === activeIndex ? "is-active" : ""}
+                  />
+                ))}
+              </div>
+              <strong>
+                {activeIndex + 1} of {supportCategories.length} topics
+              </strong>
+            </div>
+            <button
+              type="button"
+              className={`support-explorer-cue-button support-explorer-cue-button--next${
+                activeIndex < supportCategories.length - 1 ? " is-inviting" : ""
+              }`}
+              onClick={() => selectCategory(activeIndex + 1)}
+              disabled={activeIndex === supportCategories.length - 1}
+              aria-label="Show next area"
+            >
+              <ChevronRight size={19} aria-hidden="true" />
+            </button>
           </div>
 
           <p className="sr-only" aria-live="polite" aria-atomic="true">

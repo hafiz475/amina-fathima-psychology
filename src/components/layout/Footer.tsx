@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { BriefcaseBusiness, Camera, MessageCircle } from "lucide-react";
 import BrandLogo from "@/components/ui/BrandLogo";
+import BookingIcon from "@/components/ui/BookingIcon";
+import { getWhatsAppProfileUrl } from "@/data/contact";
 
 const footerLinks = {
   quickLinks: [
@@ -31,7 +33,7 @@ interface SocialLink {
 const socialLinks: SocialLink[] = [
   {
     label: "WhatsApp",
-    href: null,
+    href: getWhatsAppProfileUrl(),
     icon: MessageCircle,
     tone: "whatsapp",
   },
@@ -95,7 +97,8 @@ export default function Footer() {
             <p className="footer-cta-text">
               Ready to begin? Book a confidential session.
             </p>
-            <Link href="/book" className="footer-cta-button">
+            <Link href="/book" className="footer-cta-button booking-pulse-cta">
+              <BookingIcon />
               Book a Session
             </Link>
           </div>
@@ -104,7 +107,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="footer-bottom">
           <p className="footer-copyright">
-            © {new Date().getFullYear()} Amina Fathima. All rights reserved.
+            © {new Date().getFullYear()} Syed Amina. All rights reserved.
           </p>
           <div
             className="footer-socials"

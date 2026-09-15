@@ -12,6 +12,7 @@ import {
 import MobileMenu from "./MobileMenu";
 import MenuGlyph from "./MenuGlyph";
 import BrandLogo from "@/components/ui/BrandLogo";
+import BookingIcon from "@/components/ui/BookingIcon";
 
 const navLinks = [
   {
@@ -102,7 +103,8 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop CTA */}
-          <Link href="/book" className="navbar-cta">
+          <Link href="/book" className="navbar-cta booking-pulse-cta">
+            <BookingIcon />
             Book a Session
           </Link>
 

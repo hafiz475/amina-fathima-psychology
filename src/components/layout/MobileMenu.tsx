@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import BrandLogo from "@/components/ui/BrandLogo";
+import BookingIcon from "@/components/ui/BookingIcon";
 import MenuGlyph from "./MenuGlyph";
 
 const MotionLink = motion.create(Link);
@@ -154,7 +155,12 @@ export default function MobileMenu({ isOpen, onClose, links }: MobileMenuProps) 
                 <ShieldCheck size={16} aria-hidden="true" />
                 Confidential support, at your pace.
               </p>
-              <Link href="/book" className="hero-cta" onClick={closeFromNavigation}>
+              <Link
+                href="/book"
+                className="mobile-booking-button booking-pulse-cta"
+                onClick={closeFromNavigation}
+              >
+                <BookingIcon />
                 Book a Session
                 <ArrowUpRight size={17} aria-hidden="true" />
               </Link>

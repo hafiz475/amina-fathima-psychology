@@ -44,7 +44,7 @@ export default function About() {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <span className="label label--sun">About Amina</span>
+            <span className="label label--sun">About Syed Amina</span>
             <h2>
               Counselling psychology grounded in empathy, confidentiality and
               evidence-informed care.
@@ -73,7 +73,7 @@ export default function About() {
             </div>
 
             <Link href="/about" className="about-read-more">
-              More about Amina
+              More about Syed Amina
               <ArrowUpRight size={17} aria-hidden="true" />
             </Link>
           </motion.div>
